@@ -6,3 +6,53 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model EventGuests {
+  eventGuestId             String   @id @default(uuid()) @db.Char(36)
+  eventGuestName           String   @db.VarChar(255)
+  eventGuestEmail          String?  @db.VarChar(255)
+  eventGuestPhone          String?  @db.VarChar(255)
+  eventId                  String   @db.Char(36)
+  eventGuestInvitationSent Boolean  @default(false)
+  eventGuestCreatedAt      DateTime @default(dbgenerated("(now())")) @db.DateTime(6)
+  eventGuestUpdatedAt      DateTime @updatedAt @db.DateTime(6)
+  Events                   Events   @relation(fields: [eventId], references: [eventId], onDelete: NoAction, onUpdate: NoAction, map: "eventguests_ibfk_1")
+
+  @@unique([eventId, eventGuestEmail], map: "EventGuests_index_0")
+}
+
+model EventTypes {
+  eventTypeId          String   @id @db.Char(36)
+  eventTypeName        String   @db.VarChar(36)
+  eventTypeDescription String?  @db.Text
+  Events               Events[]
+}
+
+model Events {
+  eventId          String        @id @default(uuid()) @db.Char(36)
+  eventName        String        @db.VarChar(255)
+  eventDescription String?       @db.Text
+  eventLocation    String?       @db.VarChar(255)
+  eventDatetime    DateTime?     @db.DateTime(6)
+  eventTypeId      String        @db.Char(36)
+  userId           String        @db.Char(36)
+  eventCreatedAt   DateTime      @default(dbgenerated("(now())")) @db.DateTime(6)
+  eventUpdatedAt   DateTime      @updatedAt @db.DateTime(6)
+  EventGuests      EventGuests[]
+  EventTypes       EventTypes    @relation(fields: [eventTypeId], references: [eventTypeId], onDelete: NoAction, onUpdate: NoAction, map: "events_ibfk_1")
+  Users            Users         @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "events_ibfk_2")
+
+  @@index([eventTypeId], map: "eventTypeId")
+  @@index([userId], map: "userId")
+}
+
+model Users {
+  userId        String   @id @default(uuid()) @db.Char(36)
+  userName      String   @db.VarChar(255)
+  userEmail     String   @unique(map: "userEmail") @db.VarChar(255)
+  userPassword  String   @db.VarChar(255)
+  userPhone     String   @db.VarChar(255)
+  userCreatedAt DateTime @default(dbgenerated("(now())")) @db.DateTime(6)
+  userUpdatedAt DateTime @updatedAt @db.DateTime(6)
+  Events        Events[]
+}
