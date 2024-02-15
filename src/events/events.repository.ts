@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/modules/prisma/prisma.service';
 import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Injectable()
 export class EventsRepository {
@@ -11,6 +12,7 @@ export class EventsRepository {
       data: createEventRepositoryDto,
       select: {
         eventId: true,
+        eventName: true,
       },
     });
   }
@@ -54,6 +56,31 @@ export class EventsRepository {
           },
         },
         EventGuests: true,
+      },
+    });
+  }
+
+  updateEventById(eventId: string, updateEventRepositoryDto: UpdateEventDto) {
+    return this.prismaService.events.update({
+      where: {
+        eventId,
+      },
+      data: updateEventRepositoryDto,
+      select: {
+        eventId: true,
+        eventName: true,
+      },
+    });
+  }
+
+  deleteEventById(eventId: string) {
+    return this.prismaService.events.delete({
+      where: {
+        eventId,
+      },
+      select: {
+        eventId: true,
+        eventName: true,
       },
     });
   }

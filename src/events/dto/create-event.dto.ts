@@ -13,15 +13,15 @@ export class CreateEventDto {
 
   @IsOptional()
   @IsString()
-  eventDescription: string;
+  eventDescription?: string;
 
   @IsOptional()
   @IsString()
-  eventLocation: string;
+  eventLocation?: string;
 
   @IsOptional()
   @IsDateString()
-  eventDatetime: string;
+  eventDatetime?: string;
 
   @IsNotEmpty()
   @IsUUID()
