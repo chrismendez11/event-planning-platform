@@ -84,4 +84,16 @@ export class EventsRepository {
       },
     });
   }
+
+  getEventTypes() {
+    return this.prismaService.eventTypes.findMany();
+  }
+
+  getEventTypeById(eventTypeId: string) {
+    return this.prismaService.eventTypes.findUnique({
+      where: {
+        eventTypeId,
+      },
+    });
+  }
 }

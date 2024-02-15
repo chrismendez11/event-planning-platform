@@ -24,6 +24,14 @@ export class EventsService {
   }
 
   async deleteEventById(eventId: string) {
-    return await this.deleteEventById(eventId);
+    return await this.eventsRepository.deleteEventById(eventId);
+  }
+
+  async getEventTypes() {
+    return await this.eventsRepository.getEventTypes();
+  }
+
+  async getEventTypeById(eventTypeId: string) {
+    return await this.eventsRepository.getEventTypeById(eventTypeId);
   }
 }
