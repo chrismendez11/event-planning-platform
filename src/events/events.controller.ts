@@ -32,6 +32,11 @@ export class EventsController {
     return this.eventsService.getEventById(eventId);
   }
 
+  @Get(':eventId/event-guests')
+  getEventGuestsById(@Param('eventId') eventId: string) {
+    return this.eventsService.getEventGuestsById(eventId);
+  }
+
   @Put(':eventId')
   updateEventById(
     @Param('eventId') eventId: string,

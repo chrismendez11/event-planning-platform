@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../shared/modules/prisma/prisma.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { UpdateEventGuestDto } from './event-guests/dto/update-event-guest.dto';
 
 @Injectable()
 export class EventsRepository {
@@ -93,6 +94,66 @@ export class EventsRepository {
     return this.prismaService.eventTypes.findUnique({
       where: {
         eventTypeId,
+      },
+    });
+  }
+
+  getEventGuestsById(eventId: string) {
+    return this.prismaService.eventGuests.findMany({
+      orderBy: {
+        eventGuestName: 'asc',
+      },
+      where: {
+        eventId,
+      },
+      select: {
+        eventGuestId: true,
+        eventGuestName: true,
+        eventGuestEmail: true,
+        eventGuestPhone: true,
+        eventGuestInvitationSent: true,
+        eventGuestCreatedAt: true,
+      },
+    });
+  }
+
+  getEventGuestById(eventGuestId: string) {
+    return this.prismaService.eventGuests.findUnique({
+      where: {
+        eventGuestId,
+      },
+      select: {
+        eventGuestId: true,
+        eventGuestName: true,
+        eventGuestEmail: true,
+        eventGuestPhone: true,
+        eventGuestInvitationSent: true,
+      },
+    });
+  }
+
+  updateEventGuestById(
+    eventGuestId: string,
+    updateEventGuestRepositoryDto: UpdateEventGuestDto,
+  ) {
+    return this.prismaService.eventGuests.update({
+      where: {
+        eventGuestId,
+      },
+      data: updateEventGuestRepositoryDto,
+      select: {
+        eventGuestId: true,
+      },
+    });
+  }
+
+  deleteEventGuestById(eventGuestId: string) {
+    return this.prismaService.eventGuests.delete({
+      where: {
+        eventGuestId,
+      },
+      select: {
+        eventGuestId: true,
       },
     });
   }
