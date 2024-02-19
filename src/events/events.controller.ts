@@ -6,13 +6,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { AuthGuard } from 'src/shared/modules/auth/guards/auth.guard';
 
 @ApiTags('Events')
+@UseGuards(AuthGuard)
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}

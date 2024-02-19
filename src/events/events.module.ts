@@ -5,9 +5,10 @@ import { EventsController } from './events.controller';
 import { PrismaModule } from '../shared/modules/prisma/prisma.module';
 import { EventTypesController } from './event-types/event-types.controller';
 import { EventGuestsController } from './event-guests/event-guests.controller';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, JwtModule],
   controllers: [EventsController, EventTypesController, EventGuestsController],
   providers: [EventsService, EventsRepository],
 })
